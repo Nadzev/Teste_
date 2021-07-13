@@ -26,11 +26,10 @@ class Consumer:
         await self.create_opcua_server()
 
     async def create_opcua_server(self, *args, **kwargs):
-        pass
         # password = kwargs['password']
         # user = kwargs['user']
-        # ssh = SSH('192.168.0.104', 'lse', 'lse')
-        # await ssh.run_dockerfile()
+        ssh = SSH('192.168.0.104', 'lse', 'lse')
+        await ssh.run_dockerfile()
 
 
 

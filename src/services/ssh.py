@@ -30,10 +30,6 @@ class SSH:
     async def download(self):
         self.exec_cmd(f'echo {self.password} | sudo -S apt install docker-compose')
 
-    async def mkdir(self):
-        await self.env()
-        self.name_path = self.envi+'/'+self.path_dockerfile+'/Dockerfile'
-
     async def transfer(self):
         await self.env()
         self.exec_cmd(f'mkdir {self.path_dockerfile}')
