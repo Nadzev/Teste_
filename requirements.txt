@@ -1,0 +1,15 @@
+appdirs==1.4.4
+click==6.2
+distlib==0.3.2
+filelock==3.0.12
+pluggy==0.3.1
+py==1.10.0
+PyYAML==3.11
+rabbit==1.2.0
+six==1.16.0
+tox==2.2.1
+virtualenv==20.4.7
+
+paramiko~=2.7.2
+nmap~=0.0.1
+pika~=1.2.0
