@@ -1,54 +1,36 @@
-import pika
-from pika.adapters.asyncio_connection import AsyncioConnection
-
 from src.services.ssh import SSH
-import asyncio
+import aioamqp
 
 
 class Consumer:
-    ssh: SSH
-
     def __init__(self):
-        # falta colocar as informações de conexão, host, port...
-        params = pika.ConnectionParameters()
-        self.connection = AsyncioConnection(parameters=params)
-        self.channel = self.connection.channel()
-        self.channel.queue_declare(queue='AAS_CREATION')
-        self.channel.basic_consume(queue='AAS_CREATION', on_message_callback=self.callback, auto_ack=True)
+        pass
 
-    # ainda não sei se vai ficar assim,
-    def callback(self, ch, method, body):
-        ssh = SSH()
-        ssh.password = body
-        ssh.user = body
-        ssh.host = body
-        print(f'Received {body}')
+    async def main(self):
+        transport, protocol = await aioamqp.connect()
+        channel = await protocol.channel()
+        await channel.queue_declare(queue_name='AAS_CREATION')
+        await channel.basic_consume(self.callback, queue_name='AAS_CREATION', no_ack=True)
+        await protocol.close()
+        transport.close()
 
+    async def callback(self, channel, body, envelope, properties):
+        body = body.decode()
+        print(body)
+        # action = body['action']
+        # index = body['payload']['args']
+        # received['action'] = 'create_server_opcua'
+        # received['payload'] = dict()
+        # received['payload']['args'] = []
+        # received['payload']['kwargs'] = {}
+        await self.create_opcua_server()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    @property
-    def _ip(self):
-        return self._ip
-
-    @_ip.setter
-    def _ip(self, val: str):
-        self._ip = val
-
-    @_ip.getter
-    def _ip(self):
-        return self._ip
+    async def create_opcua_server(self, *args, **kwargs):
+        pass
+        # password = kwargs['password']
+        # user = kwargs['user']
+        # ssh = SSH('192.168.0.104', 'lse', 'lse')
+        # await ssh.run_dockerfile()
 
 
 
@@ -63,5 +45,21 @@ class Consumer:
 
 
 
-        # ch.basic_ack(delivery_tag=method.delivery_tag)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
